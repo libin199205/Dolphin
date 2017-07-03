@@ -1,0 +1,303 @@
+<!-- Main Container -->
+<main id="main-container">
+	{include file="public/crumb"/}
+
+	<!-- Page Content -->
+	<div class="content">
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="block">
+					<div class="block-header bg-gray-lighter">
+						<ul class="block-options">
+							<!-- <li>
+								<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+							</li> -->
+							<li>
+								<button type="button" data-toggle="block-option" data-action="fullscreen_toggle"></button>
+							</li>
+						</ul>
+						<h3 class="block-title">角色管理</h3>
+					</div>
+
+					<div class="block-content tab-content">
+						<div class="tab-pane active">
+							<div class="row data-table-toolbar">
+								<div class="col-sm-12">
+									<form class="form-horizontal">
+
+										<div class="form-group">
+											<label for="role" class="col-md-1 control-label">角色</label>
+											<div class="col-md-2">
+												<select name="role" id="role" class="js-select2 form-control">
+													<option value="0">请选择</option>
+													{volist name="role" id="ro"}
+														<option value="{$ro.id}" {if condition="$Think.get.role eq $ro.id"}selected='selected'{/if}>{$ro.name}</option>
+													{/volist}
+												</select>
+											</div>
+
+											<label for="access" class="col-md-1 control-label">登录后台</label>
+											<div class="col-md-2">
+												<select name="access" id="access" class="js-select2 form-control">
+													<option value="0">请选择</option>
+													<option value="1" {if condition="$Think.get.access eq 1"}selected='selected'{/if}>启用</option>
+													<option value="2" {if condition="$Think.get.access eq 2"}selected='selected'{/if}>禁止</option>
+												</select>
+											</div>
+
+											<label for="status" class="col-md-1 control-label">状态</label>
+											<div class="col-md-2">
+												<select name="status" id="status" class="js-select2 form-control">
+													<option value="0">请选择</option>
+													<option value="1" {if condition="$Think.get.status eq 1"}selected='selected'{/if}>启用</option>
+													<option value="2" {if condition="$Think.get.status eq 2"}selected='selected'{/if}>禁止</option>
+												</select>
+											</div>
+											
+											<div class="col-md-3">
+												<button type="submit" class="btn btn-minw btn-primary btn-sm" onclick="">查 询</button>&nbsp;&nbsp;&nbsp;
+
+												<button type="reset" class="btn btn-minw btn-info btn-sm">重 置</button>
+											</div>
+										</div>
+									</form>
+									<div class="toolbar-btn-action">
+										<a title="新增" icon="fa fa-plus-circle" class="btn btn-primary" href="" data-toggle="modal" data-target="#RoleAdd"><i class="fa fa-plus-circle"></i> 新增</a>
+
+										<a title="启用" icon="fa fa-check-circle-o" class="btn btn-success ajax-post confirm ajaxStatus" target-form="ids" href="javascript:;" data-val="1"><i class="fa fa-check-circle-o"></i> 启用</a>
+
+										<a title="禁用" icon="fa fa-ban" class="btn btn-warning ajax-post confirm ajaxStatus" target-form="ids" href="javascript:;" data-val="2"><i class="fa fa-ban"></i> 禁用</a>
+
+										<a title="删除" icon="fa fa-times-circle-o" class="btn btn-danger ajax-post confirm ajaxStatus" target-form="ids" href="javascript:;" data-val="3"><i class="fa fa-times-circle-o"></i> 删除</a>
+
+									</div>
+								</div>
+							</div>
+
+							<div class="table-responsive">
+								<table class="table table-builder table-hover table-bordered table-striped">
+		 							<thead>
+										<tr>
+											<th class="text-center">
+												<label class="css-input css-checkbox css-checkbox-primary remove-margin-t remove-margin-b">
+													<input type="checkbox" id="check-all"><span></span>
+												</label>
+											</th>
+											<th>ID</th>
+											<th>角色名称</th>
+											<th>描述</th>
+											<th>创建时间</th>
+											<th>是否可登录后台</th>
+											<th>状态</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										{volist name="rolist" id="row"}
+										<tr>
+											<td class="text-center">
+												<label class="css-input css-checkbox css-checkbox-primary">
+													<input class="ids" type="checkbox" name="ids[]" value="{$row.id}"><span></span>
+												</label>
+											</td>
+											<td>{$row.id}</td>
+											<td>{$row.name}</td>
+											<td title="{$row.description}">{$row.description|cutstr_html=15}</td>
+											<td>{$row.create_time|date="Y-m-d H:i",###}</td>
+											
+											<td>
+												<label class="css-input switch switch-sm switch-primary" title="开启/关闭">
+													<input type="checkbox" data-id="{$row.id}" data-val="{$row.access}" data-field="access" {if condition="$row.access eq 1"}checked=""{/if} class="saveStatus"><span></span>
+												</label>
+											</td>
+											<td>
+												<label class="css-input switch switch-sm switch-primary" title="开启/关闭">
+													<input type="checkbox" data-id="{$row.id}" data-val="{$row.status}" data-field="status" {if condition="$row.status eq 1"}checked=""{/if} class="saveStatus"><span></span>
+												</label>
+											</td>
+											<td>
+												<div class="btn-group">
+
+													<a title="编辑" icon="fa fa-pencil" class="btn btn-xs btn-default" href="javascript:;" data-id="{$row.id}" onclick="showRole(this)">
+														<i class="fa fa-pencil"></i>
+													</a>
+
+													<a title="删除" icon="fa fa-times" class="btn btn-xs btn-default ajax-get confirm" href="javascript:;" data-id="{$row.id}" data-name="{$row.name}" onclick="delRole(this)">
+														<i class="fa fa-times"></i>
+													</a>
+												</div>
+											</td>
+										</tr>
+										{/volist}
+									</tbody>
+								</table>
+							</div>
+
+							<div class="data-table-toolbar">
+								<div class="row">
+									<div class="col-sm-12">
+										{$rolist->render()}
+										<div class="pagination-info pull-right">
+											<div>
+												<input type="text" class="form-control input-sm go-page" id="go-page" name="page" value="{$rolist->currentPage()}">
+												<input type="text" class="form-control input-sm nums" id="list-rows" name="list_rows" value="{$rolist->listRows()}"> / <strong>{$rolist->lastPage()}</strong> 页，共 <strong>{$rolist->total()}</strong> 条数据，每页显示数量
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- End Content -->
+</main>
+
+
+
+
+<!-- 模态框 用户修改 -->
+<div class="modal fade" id="RoleAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="myModalLabel">角色添加</h4>
+			</div>
+			
+			<div class="modal-body">
+
+				<form class="form-horizontal" action="{:url('sys/add')}" method="post" id="addRole">
+					
+					<!-- 增加这个密码隐藏input 防止Enter键直接跳转 -->
+					<div class="form-group" style="display: none;">
+						<label class="col-md-2 control-label">密码</label>
+						<div class="col-md-10">
+							<input type="password" value="" class="form-control">
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="add_name">角色名称</label>
+						<div class="col-md-10">
+							<input type="text" name="name" id="add_name" value="" class="form-control">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="">是否可登陆后台</label>
+						<div class="col-md-10">
+							<label class="css-input switch switch-sm switch-primary" title="开启/关闭">
+								<input type="checkbox" name="access"><span></span>
+							</label>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="">状态</label>
+						<div class="col-md-10">
+							<label class="css-input switch switch-sm switch-primary" title="开启/关闭">
+								<input type="checkbox" name="status"><span></span>
+							</label>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="add_description">角色描述</label>
+						<div class="col-md-10">
+							<textarea class="form-control" name="description" id="add_description" placeholder="请输入角色描述"></textarea>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" onclick="addRole()">确定</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<!-- 模态框 用户修改 -->
+<div class="modal fade" id="Rolesave" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="myModalLabel">角色修改</h4>
+			</div>
+			
+			<div class="modal-body">
+
+				<form class="form-horizontal" action="{:url('sys/edit')}" method="post" id="editRole">
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="save_name">角色名称</label>
+						<div class="col-md-10">
+							<input type="text" name="name" id="save_name" value="" class="form-control">
+						</div>
+					</div>
+
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="">是否可登陆后台</label>
+						<div class="col-md-10">
+							<label class="css-input switch switch-sm switch-primary" title="开启/关闭">
+								<input type="checkbox" name="access" class="save_access"><span></span>
+							</label>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="">状态</label>
+						<div class="col-md-10">
+							<label class="css-input switch switch-sm switch-primary" title="开启/关闭">
+								<input type="checkbox" name="status" class="save_status"><span></span>
+							</label>
+						</div>
+					</div>
+					
+					<!-- 增加这个密码隐藏input 防止enter键直接跳转 -->
+					<div class="form-group" style="display: none;">
+						<label class="col-md-2 control-label">密码</label>
+						<div class="col-md-10">
+							<input type="password" value="" class="form-control">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="save_description">角色描述</label>
+						<div class="col-md-10">
+							<textarea class="form-control" name="description" id="save_description" placeholder="请输入角色描述"></textarea>
+						</div>
+					</div>
+
+					<input type="hidden" name="id" id="save_id" value="">
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" onclick="saveRole()">确定</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+var jsreset = "{:url('sys/role')}";		// 重置查询
+var accstatus = "{:url('sys/accstatus')}";		// 设置状态和是否可登陆后台
+var roleshow = "{:url('tool/showrole')}";		// 显示角色
+var roledel = "{:url('sys/del')}";				// 删除角色
+
+var saveClick = "{:url('ajax/status')}";		// 启用 禁止 删除
+</script>
+<script src="__ADMIN_JS__/defined/sys.js"></script>
+<script src="__ADMIN_JS__/defined/common.js"></script>

@@ -1,0 +1,66 @@
+
+/*上传图片 input样式*/
+.lxfile {
+	position: relative;
+	display: inline-block;
+	background: #fafafa;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	padding: 4px 12px;
+	overflow: hidden;
+	color: #666;
+	text-decoration: none;
+	text-indent: 0;
+	line-height: 20px;
+	margin-top: 3px;
+}
+.lxfile input {
+	position: absolute;
+	font-size: 100px;
+	right: 0;
+	top: 0;
+	opacity: 0;
+}
+.lxfile:hover {
+	background: #eee;
+	border-color: #ccc;
+	color: #333;
+	text-decoration: none;
+}
+
+/*授权页面左侧样式*/
+.powbrand ul {
+    padding:0;
+    margin-top: 0px;
+    background: #fff;
+    margin-bottom: 10px;
+}
+.powbrand li {
+    font-family: "宋体" !important;
+    font-size: 12px;
+    /* padding: 5px 10px 5px 0; */
+    /*border-left: 1px solid #ddd;*/
+    border-bottom: 1px solid #ddd;
+    /*border-right: 1px solid #ddd;*/
+}
+.powbrand ul li {
+    list-style: none;
+}
+.powbrand li a {
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+    color: #666;
+    height: 40px;
+    line-height: 40px;
+    text-indent: 2em;
+    font-family: "Microsoft Yahei";
+}
+.powbrand li a.active {
+    background: #414da7;
+    color: #fff !important;
+}
+.powbrand li a:hover {
+    background: #414da7;
+    color: #fff !important;
+}

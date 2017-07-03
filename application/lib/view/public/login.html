@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html class="no-focus" lang="zh">
+    <head>
+        <meta charset="utf-8">
+        <title>Lieb - 管理系统</title>
+        <meta name="description" content="">
+        <meta name="author" content="caiweiming">
+        <meta name="robots" content="noindex, nofollow">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0">
+
+        <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
+        <link rel="shortcut icon" href="__ADMIN_IMG__/link.jpg" type="image/png" />
+        <!-- END Icons -->
+
+        <!-- Bootstrap and OneUI CSS framework -->
+        <link rel="stylesheet" href="__ADMIN_CSS__/bootstrap.min.css">
+        <link rel="stylesheet" id="css-main" href="__ADMIN_CSS__/oneui.css">
+        <!-- END Stylesheets -->
+    </head>
+    <body>
+        <!-- Login Content -->
+        <div class="bg-white pulldown">
+            <div class="content content-boxed overflow-hidden">
+                <div class="row">
+                    <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+                        <div class="push-30-t push-50 animated fadeIn">
+                            <!-- Login Title -->
+                            <div class="text-center">
+                                <img src="__ADMIN_IMG__/061.jpg" alt="Lieb管理系统" style="width: 150px;">
+                                <p class="text-muted push-15-t">Lieb管理系统</p>
+                            </div>
+                            <!-- END Login Title -->
+
+                            <!-- Login Form -->
+                            <form class="js-validation-login form-horizontal push-30-t"  action="" method="post" onSubmit="return checklog(this)">
+                                <div class="form-group">
+                                    <label class="col-xs-12" for="login-username">用户名</label>
+                                    <div class="col-xs-12">
+                                        <input class="form-control" type="text" id="login-username" name="username" placeholder="请输入您的用户名">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-xs-12" for="login-password">密码</label>
+                                    <div class="col-xs-12">
+                                        <input class="form-control" type="password" id="login-password" name="password" placeholder="请输入您的密码">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-xs-12" for="login-password">验证码</label>
+                                    <div class="col-xs-7">
+                                        <input class="form-control" type="text" id="capval" name="captcha" placeholder="请输入验证码">
+                                    </div>
+                                    <div class="col-xs-5">
+                                        <img src="{:captcha_src()}" class="pull-right" id="captcha" style="cursor: pointer;" onclick="this.src='{:captcha_src()}?q='+Math.random();" title="点击刷新" alt="captcha" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-xs-6">
+                                        <label class="css-input switch switch-sm switch-primary">
+                                            <input type="checkbox" id="login-remember-me" name="remember-me"><span></span> 7天内自动登录?
+                                        </label>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <div class="font-s13 text-right push-5-t">
+                                            <a href="">忘记密码?</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group push-30-t">
+                                    <div class="col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
+                                        <input type="submit" value="登 录" id="login-submit" class="btn btn-block btn-primary">
+                                    </div>
+                                </div>
+                            </form>
+                            <!-- END Login Form -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END Login Content -->
+
+        <!-- Login Footer -->
+        <div class="pulldown push-30-t text-center animated fadeInUp">
+            <small class="text-muted">Lieb libin199205@163.com</a> &copy; <span class="js-year-copy"></span></small>
+        </div>
+        <!-- END Login Footer -->
+
+        <!-- OneUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
+        <script src="__ADMIN_JS__/core/jquery.min.js"></script>
+        <script src="__ADMIN_JS__/core/bootstrap.min.js"></script>
+
+        <script src="__PLUGINS__/layer/layer.js"></script>
+        <script src="__PLUGINS__/layer/dialog.js"></script>
+
+        <script type="text/javascript">
+
+            function checklog(e)
+            {
+                $('#login-submit').val('登录中...');
+
+                $.ajax({
+                    url:"{:url('login/index')}",
+                    type:"POST",
+                    data:$(e).serialize(),
+                    dataType:"json",
+                    success: function(data){
+                        $('#login-submit').text('登录中...');
+                        if(data.code==0){
+                            layer.msg(data.msg, {icon: 5,area:['auto' , 'auto']}, function(){
+                                $('#capval').val('');
+                                $('#login-submit').val('登 录');
+                                $('#captcha').attr("src", "/captcha?q="+Math.random());
+                            });
+                        }
+
+                        if(data.code==1){
+                            layer.msg(data.msg, {icon: 1,time: 1500,shade: 0.1}, function(){
+                                window.location.href=data.url;
+                            });
+                        }
+                    }
+                });
+                return false;
+            }
+
+            // Add the correct copyright year
+            var uiYearCopy = function() {
+                var $date       = new Date();
+                var $yearCopy   = jQuery('.js-year-copy');
+
+                var y = $date.getFullYear();  
+                var m = $date.getMonth() + 1;
+                m = m < 10 ? '0' + m : m;
+                if (y+m==='201706') {
+                    $yearCopy.html('2017-06');
+                } else {
+                    $yearCopy.html('2017-06 - ' + y + '=' + m);
+                }
+            };
+            uiYearCopy();
+        </script>
+    </body>
+</html>

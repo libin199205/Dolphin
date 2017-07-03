@@ -1,0 +1,258 @@
+<!-- Main Container -->
+<main id="main-container">
+	{include file="public/crumb"/}
+
+	<!-- Page Content -->
+	<div class="content">
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="block">
+					<div class="block-header bg-gray-lighter">
+						<ul class="block-options">
+							<!-- <li>
+								<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+							</li> -->
+							<li>
+								<button type="button" data-toggle="block-option" data-action="fullscreen_toggle"></button>
+							</li>
+						</ul>
+						<h3 class="block-title">用户管理</h3>
+					</div>
+
+					<div class="block-content tab-content">
+						<div class="tab-pane active">
+							<div class="row data-table-toolbar">
+								<div class="col-sm-12">
+									<form class="form-horizontal">
+									
+										<div class="form-group">
+
+											<label for="username"  class="col-md-1 control-label">用户名称</label>
+											<div class="col-md-2">
+												<input type="text" name="username" id="username" class="form-control" value="{$Think.get.username}">
+											</div>
+
+											<label for="nickname"  class="col-md-1 control-label">昵称</label>
+											<div class="col-md-2">
+												<input type="text" name="nickname" id="nickname" class="form-control" value="{$Think.get.nickname}">
+											</div>
+
+											<label for="email"  class="col-md-1 control-label">邮箱</label>
+											<div class="col-md-2">
+												<input type="text" name="email" id="email" class="form-control" value="{$Think.get.email}">
+											</div>
+
+											<label for="mobile"  class="col-md-1 control-label">手机号码</label>
+											<div class="col-md-2">
+												<input type="text" name="mobile" id="mobile" class="form-control" value="{$Think.get.mobile}">
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label for="role" class="col-md-1 control-label">角色</label>
+											<div class="col-md-2">
+												<select name="role" id="role" class="js-select2 form-control">
+													<option value="0">请选择</option>
+													{volist name='role' id='ro'}
+														<option value="{$ro.id}" {if condition="$Think.get.role eq $ro.id"}selected='selected'{/if}>{$ro.name}</option>
+													{/volist}
+												</select>
+											</div>
+
+											<label for="status" class="col-md-1 control-label">状态</label>
+											<div class="col-md-2">
+												<select name="status" id="status" class="js-select2 form-control">
+													<option value="0">请选择</option>
+													<option value="1" {if condition="$Think.get.status eq 1"}selected='selected'{/if}>启用</option>
+													<option value="2" {if condition="$Think.get.status eq 2"}selected='selected'{/if}>禁止</option>
+												</select>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<div class="col-md-offset-5">
+												<button type="submit" class="btn btn-minw btn-primary btn-sm" onclick="">查 询</button>&nbsp;&nbsp;&nbsp;
+
+												<button type="reset" class="btn btn-minw btn-info btn-sm">重 置</button>
+											</div>
+										</div>
+									</form>
+									<div class="toolbar-btn-action"></div>
+								</div>
+							</div>
+
+							<div class="table-responsive">
+								<table class="table table-builder table-hover table-bordered table-striped">
+		 							<thead>
+										<tr>
+											<th class="text-center">
+												<label class="css-input css-checkbox css-checkbox-primary remove-margin-t remove-margin-b">
+													<input type="checkbox" id="check-all"><span></span>
+												</label>
+											</th>
+											<th>ID</th>
+											<th>用户名</th>
+											<th>昵称</th>
+											<th>角色</th>
+											<th>邮箱</th>
+											<th>手机号</th>
+											<th>创建时间</th>
+											<th>状态</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										{volist name="userlist" id="row"}
+										<tr>
+											<td class="text-center">
+												<label class="css-input css-checkbox css-checkbox-primary">
+													<input class="ids" type="checkbox" name="ids[]" value="{$row.id}"><span></span>
+												</label>
+											</td>
+											<td>{$row.id}</td>
+											<td>{$row.username}</td>
+											<td>{$row.nickname|cutstr_html=8}</td>
+											<td title="{$row.posname}">{$row.posname|cutstr_html=8}</td>
+									
+											<td>{$row.email}</td>
+											<td>{$row.mobile}</td>
+											<td>{$row.add_time|date="Y-m-d H:i",###}</td>
+											<td>
+												<label class="css-input switch switch-sm switch-primary" title="开启/关闭">
+													<input type="checkbox" data-id="{$row.id}" data-val="{$row.status}" {if condition="$row.status eq 1"}checked=""{/if} class="saveStatus"><span></span>
+												</label>
+											</td>
+											<td>
+												<div class="btn-group">
+
+													<a title="编辑" icon="fa fa-pencil" class="btn btn-xs btn-default" href="javascript:;" data-id="{$row.id}" onclick="showUser(this)" target="_self" data-toggle="tooltip">
+														<i class="fa fa-pencil"></i>
+													</a>
+
+													<a title="删除" icon="fa fa-times" class="btn btn-xs btn-default ajax-get confirm" href="javascript:;" data-id="{$row.id}" data-name="{$row.username}" onclick="delUser(this)" data-toggle="tooltip">
+														<i class="fa fa-times"></i>
+													</a>
+												</div>
+											</td>
+										</tr>
+										{/volist}
+									</tbody>
+								</table>
+							</div>
+
+							<div class="data-table-toolbar">
+								<div class="row">
+									<div class="col-sm-12">
+										{$userlist->render()}
+										<div class="pagination-info pull-right">
+											<div>
+												<input type="text" class="form-control input-sm go-page" id="go-page" name="page" value="{$userlist->currentPage()}">
+												<input type="text" class="form-control input-sm nums" id="list-rows" name="list_rows" value="{$userlist->listRows()}"> / <strong>{$userlist->lastPage()}</strong> 页，共 <strong>{$userlist->total()}</strong> 条数据，每页显示数量
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+
+
+
+<!-- 模态框 用户修改 -->
+<div class="modal fade" id="talAllot" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="myModalLabel">用户修改</h4>
+			</div>
+			
+			<div class="modal-body">
+
+				<form class="form-horizontal" action="{:url('user/edit')}" method="post" id="editUser">
+					
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="">用户名称</label>
+						<div class="col-md-10" style="padding-top: 7px;">
+							<span id="sava_username"></span>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="save_nickname">昵称</label>
+						<div class="col-md-10">
+							<input type="text" name="nickname" id="save_nickname" value="" class="form-control">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="save_sarole">角色</label>
+						<div class="col-md-10">
+							<select name="role[]" id="save_sarole" class="js-select2 form-control" style="width: 100%" multiple='multiple' data-allow-clear="true" data-placeholder="请最少选择一项">
+								{volist name='role' id='ro'}
+									<option value="{$ro.id}" {if condition="$Think.get.role eq $ro.id"}selected='selected'{/if}>{$ro.name}</option>
+								{/volist}
+							</select>
+						</div>
+					</div>
+					
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="save_email">邮箱</label>
+						<div class="col-md-10">
+							<input type="text" name="email" id="save_email" value="" class="form-control">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="save_mobile">手机号码</label>
+						<div class="col-md-10">
+							<input type="text" name="mobile" id="save_mobile" value="" class="form-control">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="save_password">密码</label>
+						<div class="col-md-10">
+							<input type="password" name="password" id="save_password" value="" class="form-control">
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label class="col-md-2 control-label" for="">头像</label>
+						<div class="col-md-10">
+							<a href="" id="img-like" class="img-like" target="_blank">
+
+							</a><br/>
+							<a href="javascript:;" class="lxfile">选择文件
+								<input type="file" name="avatar" onchange="imgPreview(this)" accept=".jpg,.png,.bmp,.jpeg,.gif"/>
+							</a>
+						</div>
+					</div>
+					
+					<input type="hidden" name="id" id="save_id" value="">
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" onclick="saveUser()">确定</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<script type="text/javascript">
+var usershow = "{:url('tool/showuser')}";	// 显示用户信息
+var userdel = "{:url('user/del')}";			// 删除用户信息
+var userstatus = "{:url('user/status')}";	// 修改用户状态
+var jsreset = "{:url('user/lists')}";		// 重置查询
+</script>
+<script src="__ADMIN_JS__/defined/user.js"></script>

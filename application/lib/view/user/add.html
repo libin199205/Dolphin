@@ -1,0 +1,130 @@
+<!-- Main Container -->
+<main id="main-container">
+	{include file="public/crumb"/}
+	
+	<!-- Page Content -->
+	<div class="content">
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="block">
+
+					<div class="block-header bg-gray-lighter">
+						<ul class="block-options">
+							<!-- <li>
+								<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+							</li> -->
+							<li>
+								<button type="button" data-toggle="block-option" data-action="fullscreen_toggle"></button>
+							</li>
+						</ul>
+						<h3 class="block-title">新增</h3>
+					</div>
+
+					<div class="block-content tab-content">
+						<div class="tab-pane active">
+							<div class="block-content">
+								<form class="form-horizontal form-builder row getfrom" name="form-builder" action="{:url('user/add')}" method="post" onSubmit="return addUser(this)">
+
+									<div class="form-group col-md-12 " id="form_group_username">
+										<label class="col-xs-12" for="username">用户名</label>
+										<div class="col-sm-12">
+											<input class="form-control" type="text" id="username" name="username" value="" placeholder="请输入用户名" >
+											<div class="help-block">必填，可由英文字母、数字组成</div>
+										</div>
+									</div>
+
+									<div class="form-group col-md-12 " id="form_group_username">
+										<label class="col-xs-12" for="nickname">昵称</label>
+										<div class="col-sm-12">
+											<input class="form-control" type="text" id="nickname" name="nickname" value="" placeholder="请输入昵称" >
+											<div class="help-block">可以是中文</div>
+										</div>
+									</div>
+
+									<div class="form-group col-md-12 " id="form_group_nickname">
+										<label class="col-xs-12" for="email">邮箱</label>
+										<div class="col-sm-12">
+											<input class="form-control" type="text" id="email" name="email" value="" placeholder="请输入邮箱" >
+											<div class="help-block">必填，请输入邮箱</div>
+										</div>
+									</div>
+
+									<div class="form-group col-md-12 " id="form_group_email">
+										<label class="col-xs-12" for="mobile">手机号码</label>
+										<div class="col-sm-12">
+											<input class="form-control" type="text" id="mobile" name="mobile" value="" placeholder="请输入手机号码" >
+											<div class="help-block">必填，请输入手机号码</div>
+										</div>
+									</div>
+
+									<div class="form-group col-md-12 " id="form_group_role">
+										<label class="col-xs-12" for="role">角色</label>
+										<div class="col-sm-12">
+											<select class="js-select2 form-control" id="role" name="role[]" data-allow-clear="true" data-placeholder="请最少选择一项" multiple='multiple'>
+												{volist name='role' id='ro'}
+												<option value="{$ro.id}">{$ro.name}</option>
+												{/volist}
+											</select>
+										</div>
+									</div>
+
+									<div class="form-group col-md-12 " id="form_group_password">
+										<label class="col-xs-12" for="password">密码</label>
+										<div class="col-sm-12">
+											<input class="form-control" type="password" id="password" name="password" value="" placeholder="请输入密码" >
+											<div class="help-block">必填，6-20位</div>
+										</div>
+									</div>
+
+									<div class="form-group col-md-12 ">
+										<label class="col-xs-12" for="avatar">头像</label>
+										<div class="col-xs-12">
+											<a href="javascript:;" id="img-like" target="_blank">
+												<img id="preview"  style="height: 100px;" src="__ADMIN_IMG__/avatars/avatar10.jpg" />
+											</a>
+											<br/>
+											<a href="javascript:;" class="lxfile">选择文件
+												<input type="file" name="avatar" onchange="imgPreview(this)" accept=".jpg,.png,.bmp,.jpeg,.gif"/>
+											</a>
+										</div>
+									</div>
+
+									<div class="form-group col-md-12 " id="form_group_status">
+										<label class="col-xs-12" for="status">状态</label>
+											<div class="col-xs-12">
+												<label class="css-input css-radio css-radio-primary css-radio-sm push-10-r  ">
+												<input type="radio" name="status" id="status1" value="0"  >
+												<span></span>禁用</label>
+
+												<label class="css-input css-radio css-radio-primary css-radio-sm push-10-r  ">
+												<input type="radio" name="status" id="status2" value="1" checked >
+												<span></span>启用</label>
+											</div>
+									</div>
+
+									<div class="form-group col-md-12">
+										<div class="col-xs-12">
+											<button class="btn btn-minw btn-primary" target-form="form-builder" type="submit">提 交</button>&nbsp;
+											<button class="btn btn-minw btn-default" type="button" onclick="javascript:history.back(-1);return false;">返 回</button>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- END Page Content -->
+</main>
+<script type="text/javascript">
+var jsreset = "";
+</script>
+<script src="__ADMIN_JS__/defined/user.js"></script>
+
+<style type="text/css">
+
+
+</style>

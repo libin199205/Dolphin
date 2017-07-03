@@ -1,0 +1,113 @@
+<!-- Main Container -->
+<main id="main-container">
+	{include file="public/crumb"/}
+
+	<!-- Page Content -->
+	<div class="content">
+		
+		<div class="row">
+			<div class="col-md-12">
+				<div class="block">
+					<div class="block-header bg-gray-lighter">
+						<ul class="block-options">
+							<!-- <li>
+								<button type="button" data-toggle="block-option" data-action="refresh_toggle" data-action-mode="demo"><i class="si si-refresh"></i></button>
+							</li> -->
+							<li>
+								<button type="button" data-toggle="block-option" data-action="fullscreen_toggle"></button>
+							</li>
+						</ul>
+						<h3 class="block-title">角色管理</h3>
+					</div>
+
+					<div class="block-content tab-content">
+						<div class="tab-pane active">
+							<div class="row data-table-toolbar">
+								
+
+								<div class="col-sm-3">
+									<div class="panel panel-default">
+
+										<div class="panel-body">
+											<select class="js-select2 form-control" id="selecteds">
+												<option value="0">请选择</option>
+												{volist name='role' id='ro'}
+													<option value="{$ro.id}" data-name="{$ro.name}">{$ro.name}</option>
+												{/volist}
+											</select>
+										</div>
+
+										<div style="/*max-height: 450px;*/overflow-y: auto;" id="clist">
+											<div class="powbrand jqtransformdone">
+												<ul id="">
+													{volist name="role" id="list"}
+														<li><a href="javascript:;" onclick="isCheck('{$list.id}')" class="cd_{$list.id}">{$list.name}</a></li>
+													{/volist}
+												</ul>
+
+											</div>
+										</div>
+
+									</div>
+								</div>
+
+								<div class="col-sm-9">
+									<div class="panel panel-default">
+										<div class="panel-heading">
+											<h3 class="panel-title"><span class="power-title" style="color: #f00;"></span>授权管理</h3>
+										</div>
+
+										<form action="{:url('sys/power')}" method="post" id="editPower">
+											<div class="panel-body" style="/*max-height: 450px;*/overflow-y: auto;" id="clist">
+												
+												<div style="margin-bottom: 5px;">
+													<a title="全选" icon="fa fa-check-circle-o" class="btn btn-success" href="javascript:;" id="checkall"><i class="fa fa-check-circle-o"></i> 全选</a>
+
+													<a title="取消" icon="fa fa-ban" class="btn btn-warning" href="javascript:;" id="checknull"><i class="fa fa-ban"></i> 取消</a>
+												</div>
+												
+												{volist name="power" id="row"}
+												<div class="panel panel-default module">
+
+													<div class="panel-heading">
+														<label class="css-input css-checkbox css-checkbox-primary remove-margin-t remove-margin-b pr">
+															<input type="checkbox" class="checkall" name="power[]" value="{$row.id}"><span></span> {$row.title}
+														</label>
+													</div>
+													<div class="panel-body">
+														{volist name="row['sub']" id="v"}
+														<div class="col-md-3" style="margin-bottom: 5px;">
+															<label class="css-input css-checkbox css-checkbox-primary remove-margin-t remove-margin-b">
+																<input type="checkbox" class="limit" name="power[]" value="{$v.id}"><span></span> {$v.title}
+															</label>
+														</div>
+														{/volist}
+													</div>
+												</div>
+												{/volist}
+												
+												<div style="margin-top: 5px;">
+													<input type="hidden" name="id" value="" id="role_id">
+													<button type="button" class="btn btn-minw btn-primary btn-sm" onclick="savePower()">提 交</button>
+												</div>
+
+											</div>
+										</form>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>		
+
+	</div>
+	<!-- End Content -->
+</main>
+<script type="text/javascript">
+var jsreset = "";
+var showPower = "{:url('tool/showpower')}"; // 实时获取权限值
+</script>
+<script src="__ADMIN_JS__/defined/sys.js"></script>
